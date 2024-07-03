@@ -7,8 +7,8 @@ fi
 
 if [ "$(id -u)" -eq 0 ]; then
     echo "Not apt installed. Remove will continue with this script..."
-    systemctl stop log2ram.service log2ram-daily.timer
-    systemctl disable log2ram.service log2ram-daily.timer
+    systemctl stop log2ram.service
+    systemctl disable log2ram.service
     rm -rf /etc/systemd/system/log2ram*
     rm /usr/local/bin/log2ram
     rm /etc/log2ram.conf
