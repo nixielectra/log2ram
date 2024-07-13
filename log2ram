@@ -45,14 +45,16 @@ sync_to_disk() {
         optional_params+=("--exclude=journal/*/*")
     fi
 
+    # Delete rotated logs
     find $PATH_DISK -type f -regextype posix-egrep -regex '.+\.([0-9]|gz|xz)+' | while read -r file
     do
         rm $file
     done
 
+	# Clear logs
     find $PATH_DISK -type f | while read -r file
     do
-        > $file
+        cat /dev/null > $file
     done
 
     if [ -z "${NO_RSYNC}" ] && [ -x "$(command -v rsync)" ]; then
