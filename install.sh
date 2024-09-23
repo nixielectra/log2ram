@@ -12,14 +12,12 @@ systemctl -q is-active log2ram && {
 # log2ram
 mkdir -p /usr/local/bin/
 install -m 644 log2ram.service /etc/systemd/system/log2ram.service
-install -m 644 log2ram-daily.service /etc/systemd/system/log2ram-daily.service
-install -m 644 log2ram-daily.timer /etc/systemd/system/log2ram-daily.timer
 install -m 755 log2ram /usr/local/bin/log2ram
 if [ ! -f /etc/log2ram.conf ]; then
     install -m 644 log2ram.conf /etc/log2ram.conf
 fi
 install -m 644 uninstall.sh /usr/local/bin/uninstall-log2ram.sh
-systemctl enable log2ram.service log2ram-daily.timer
+systemctl enable log2ram.service
 
 # logrotate
 if [ -d /etc/logrotate.d ]; then
