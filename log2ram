@@ -24,15 +24,15 @@ sync_to_disk() {
     is_safe
 
     # Clear logs (only copy structure)
-    find $PATH_DISK -type f | while read -r file
+    find $PATH_DISK -type f ! -path '*/journal/*' ! -path '*/asf/*' ! -path '*/pihole/*' ! -path '*/immich/*' | while read -r file
     do
         cat /dev/null > $file
     done
 
     if [ -z "${NO_RSYNC}" ] && [ -x "$(command -v rsync)" ]; then
         rsync -aAXv --sparse --inplace --no-whole-file --delete-after \
-                --exclude '*.gz' --exclude '*.xz' --exclude='*.[0-9]' \
-                --exclude 'journal/*/*' "$RAM_LOG"/ "$HDD_LOG"/ 2>&1 | tee -a "$LOG2RAM_LOG"
+                --exclude={'*.gz','*.xz','*.[0-9]','journal/*/*','asf/*','pihole/*/*','immich/*/*'} \
+				"$RAM_LOG"/ "$HDD_LOG"/ 2>&1 | tee -a "$LOG2RAM_LOG"
     else
         cp -rfup --sparse=always "$RAM_LOG"/ -T "$HDD_LOG"/ 2>&1 | tee -a "$LOG2RAM_LOG"
     fi
